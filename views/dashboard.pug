@@ -1,0 +1,15 @@
+extend ./header.pug
+
+
+block content
+        
+        div( class = 'container p-3 mt-5' action="/api/regiter", method="POST" )
+            lable(for = 'token' class = 'text-center')
+                h1 
+                    | Your API-KEY
+            input(readonly, value = token class = ' mt-3 p-2 form-control', type="text", id = 'token')
+            button(class = 'btn btn-primary d-block m-auto mt-2 ' id = 'btnCopy' onClick = 'copy()') Copy Token
+
+
+//- 8302043325
+        

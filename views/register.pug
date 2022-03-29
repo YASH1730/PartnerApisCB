@@ -1,0 +1,18 @@
+extend ./header.pug
+
+block content
+           
+            form( class = 'container p-3 w-50  mt-5' action="/regiter", method="POST" )         
+                    //- if typeof mag != 'undefined'
+                    div(class=`alert alert-${theme} alert-dismissible fade show` role="alert")
+                                <h6>#{msg}</h6>
+                                button(type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close")
+                    
+                    h1(class= 'text-center') Register
+                    
+                    input(required , class = ' mt-3 p-2 form-control', type="text",placeholder = 'Full Name', name="name")
+                    input(required , size="20" minlength = '15' maxlength="15" style="text-transform:uppercase" class = ' mt-3 p-2 form-control', type="text",placeholder = 'Gtin', name="gstin")
+                    input(required   class = ' mt-3 p-2 form-control', type="number",placeholder = 'Contact Number', name="contact")
+                    input(required class = ' mt-3 p-2 form-control', type="email",placeholder = 'Email', name="email") 
+                    input(required class = ' mt-3 p-2 form-control', type="text",placeholder = 'Adress', name="address")
+                    button(id='submit',class = ' mt-3 p-2 btn btn-primary d-block m-auto',type = 'submit') Register
