@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT || 80;
 const bodyparser = require('body-parser')
 const path = require('path')
+const db  = require('./database/dbConfig')
 
 // midilwear to parse the body 
 app.use(bodyparser.json());
@@ -10,9 +11,10 @@ app.use(bodyparser.urlencoded({
     extended: true
 }));
 
+
+
 // public path
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('views', './src/public');
+app.use('/partnerapis', express.static(path.join(__dirname, 'public')))
 
 //set up the view engine 
 app.set('view engine','pug')
