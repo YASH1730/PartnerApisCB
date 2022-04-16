@@ -26,15 +26,15 @@ function AuthJwt(req,res,next){
     }
 
 
-router.get('/partnerapis/',(req,res)=>{
+router.get('/',(req,res)=>{
     res.render('home.pug',{msg : 'All feilds are mendotory !!!',theme : 'info'});
 })
 
-router.get('/partnerapis/register',(req,res)=>{
+router.get('/partner/apis/register',(req,res)=>{
     res.render('register.pug',{msg : 'All feilds are mendotory !!!',theme : 'info'});
 })
 
-router.get('/partnerapis/login',(req,res)=>{
+router.get('/partner/apis/login',(req,res)=>{
     res.render('login.pug',{msg : 'Enter the registered contact number to get an api keys !!!',theme : 'info'});
 })
 
@@ -44,16 +44,19 @@ router.get('/partnerapis/login',(req,res)=>{
 // })
 
 // api for register
-router.post('/partnerapis/regiter',controller.register);
+router.post('/partner/apis/regiter',controller.register);
 
 // api for getting token
-router.post('/partnerapis/login',controller.getToken);
+router.post('/partner/apis/login',controller.getToken);
 
 // api for getting provider list
-router.get('/partnerapis/getProvider',AuthJwt,controller.getProvider);
+router.get('/partner/apis/getProvider',AuthJwt,controller.getProvider);
 
 // api for getting course list
-router.get('/partnerapis/getCourse',AuthJwt,controller.getData);
+router.get('/partner/apis/getCourse',AuthJwt,controller.getData);
+
+// api for getting course list for the searchBar 
+router.get('/partner/apis/getCourseList',controller.getSearch);
 
 
 module.exports = router;
