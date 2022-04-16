@@ -56,7 +56,6 @@ router.get('/partner/apis/getProvider',AuthJwt,controller.getProvider);
 router.get('/partner/apis/getCourse',AuthJwt,controller.getData);
 
 // api for getting course list for the searchBar 
-router.get('/partner/apis/getCourseList',controller.getSearch);
-
+router.get('/partner/apis/getCourseList',AuthJwt,controller.getSearch);
 
 module.exports = router;

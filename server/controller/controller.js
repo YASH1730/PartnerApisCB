@@ -144,6 +144,8 @@ exports.getSearch = async(req,res)=>{
 
   const Filters = JSON.parse(req.query.filter)
 
+  let providers = [];
+
 
   let data  = await db.table('data').where((sortQuery)=>{
 
@@ -160,29 +162,27 @@ exports.getSearch = async(req,res)=>{
               {
                 if(listProvider.indexOf(key) > -1)
                 {
-                  console.log(key)
                   filter.orWhere('provider','=',key)
                 }
               }
-            }
-            // for price checking
-            if(Filters.Free === true && Filters.Paid === false && Filters.Subscription === false)
-               filter.whereNull('price')
-            else if (Filters.Paid === true || Filters.Subscription === true &&  Filters.Free === false)
-              {
-                 filter.andWhere('price','>',0)
-                }
-            else{
-              filter.whereNull('price')
-              filter.orWhere('price','>',0)
-            }
+            }}
+            
+          })
+          // for price checking
+          if(Filters.Free === true && Filters.Paid === false && Filters.Subscription === false)
+          sortQuery.whereNull('price')
+          else if (Filters.Paid === true || Filters.Subscription === true &&  Filters.Free === false)
+            {
+              sortQuery.andWhere('price','>',0)
+              }
+          else{
+            sortQuery.whereNull('price')
+            sortQuery.orWhere('price','>',0)
           }
-
-        })
 
       
     }).limit(100)
-    console.log('data >>>>>> ',data)
+    // console.log('data >>>>>> ',data)
     res.send(data)
 
 }
