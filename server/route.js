@@ -17,7 +17,7 @@ function AuthJwt(req,res,next){
     let token = req.headers.authorization.split('Api-Key ')[1];
     
      JWT.verify(token, process.env.ACCESS_SECRET, (err, user) => {
-        console.log(err)
+        // console.log(err)
         if (err) return res.sendStatus(403)
         req.user = user
         next()

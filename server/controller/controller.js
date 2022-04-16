@@ -149,12 +149,15 @@ exports.getSearch = async(req,res)=>{
 
   let data  = await db.table('data').where((sortQuery)=>{
 
+    console.log(req.query.q)
+
         // for title 
         sortQuery.where('title', 'ilike', `%${req.query.q}%`)
 
+        // for provider
+        
         sortQuery.andWhere((filter)=>{
-
-          // for provider
+          
           for (const key in Filters) {
             if (Filters.hasOwnProperty.call(Filters, key)) {
               const element = Filters[key];
@@ -166,19 +169,20 @@ exports.getSearch = async(req,res)=>{
                 }
               }
             }}
-            
           })
+          
+          sortQuery.andWhere((filter)=>{
           // for price checking
-          if(Filters.Free === true && Filters.Paid === false && Filters.Subscription === false)
-          sortQuery.whereNull('price')
-          else if (Filters.Paid === true || Filters.Subscription === true &&  Filters.Free === false)
-            {
-              sortQuery.andWhere('price','>',0)
-              }
+          if(Filters.Free === true && (Filters.Paid === false && Filters.Subscription === false))
+            filter.whereNull('price')
+
+           else if ((Filters.Paid === true || Filters.Subscription === true) &&  Filters.Free === false)
+             filter.andWhere('price','>',0)
+              
           else{
-            sortQuery.whereNull('price')
-            sortQuery.orWhere('price','>',0)
-          }
+            filter.whereNull('price')
+            filter.orWhere('price','>',0)
+          }})
 
       
     }).limit(100)
