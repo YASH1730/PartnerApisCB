@@ -140,16 +140,23 @@ exports.getSearch = async(req,res)=>{
 
   console.log(JSON.parse(req.query.filter))
 
-  const listProvider = ['Udemy','Coursera','FutureLearn','edX'];
+  const listProvider = {
+                        Udemy : true,
+                        Coursera : true,
+                        FutureLearn : true,
+                        edX : true
+                      };
 
   const Filters = JSON.parse(req.query.filter)
 
-  let providers = [];
+  // for course count
+  // let total  = await db.table('data').count('index as total').where('title', 'ilike', `%${req.query.q}%`)
+
+  // const offset = (e.query.pageNumber-1)*100
+  // console.log(offset)
 
 
-  let data  = await db.table('data').where((sortQuery)=>{
-
-    console.log(req.query.q)
+  let data  = await db.table('data').select('uuid','provider','title','price','subjects','start_date','university').where((sortQuery)=>{
 
         // for title 
         sortQuery.where('title', 'ilike', `%${req.query.q}%`)
@@ -185,8 +192,52 @@ exports.getSearch = async(req,res)=>{
           }})
 
       
-    }).limit(100)
-    // console.log('data >>>>>> ',data)
-    res.send(data)
+    }).orderBy('ranking_points','ase')
+
+    console.log(data)
+
+    let finalData = [];
+    secondData = [];
+    
+    for (const key in data) {
+      if (Object.hasOwnProperty.call(data, key)) {
+        const element = data[key];
+
+        if(element.provider == 'Udemy' && listProvider[element.provider] == true)
+          {
+            finalData.push(data[key]);
+            listProvider[element.provider] = false;
+          }
+        else if (element.provider == 'edX' && listProvider[element.provider] == true)
+        {
+          finalData.push(data[key]);
+          listProvider[element.provider] = false;
+        }
+        else if (element.provider == 'FuturLearn' && listProvider[element.provider] == true)
+        {
+          finalData.push(data[key]);
+          listProvider[element.provider] = false;
+        }
+        else if (element.provider == 'Coursera' && listProvider[element.provider] == true)
+        {
+          finalData.push(data[key]);
+          listProvider[element.provider] = false;
+        }
+        else{
+          secondData.push(data[key]);
+        }
+
+        if(listProvider.Udemy === false && listProvider.Coursera === false && listProvider.edX === false && listProvider.FutureLearn === false)
+        {
+          listProvider.Udemy = true; listProvider.Coursera = true; listProvider.edX = true; listProvider.FutureLearn = true;
+        }
+      }
+    }
+
+    finalData = finalData.concat(secondData)
+
+    // console.log(finalData)
+
+    res.send(finalData)
 
 }
